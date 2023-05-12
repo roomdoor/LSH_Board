@@ -42,7 +42,10 @@ public class PostService {
 
 		// 3. postWord 저장
 		List<PostWord> postWords = postWordService.create(wordMap, words, post);
-		return post.toDto();
+		Response response = post.toDto();
+		response.setRelationPosts(postWordService.getRelationPost(post));
+
+		return response;
 	}
 
 	public List<ResponseList> getList() {

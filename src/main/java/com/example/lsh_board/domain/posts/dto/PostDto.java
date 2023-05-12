@@ -59,7 +59,6 @@ public class PostDto {
 
 	@Getter
 	@Setter
-	@AllArgsConstructor
 	@NoArgsConstructor
 	@ToString
 	@Builder
@@ -72,9 +71,10 @@ public class PostDto {
 		private LocalDate createdAt;
 
 		@QueryProjection
-		public ResponseList(Long postId, String title) {
+		public ResponseList(Long postId, String title, LocalDate createdAt) {
 			this.postId = postId;
 			this.title = title;
+			this.createdAt = createdAt;
 		}
 
 	}

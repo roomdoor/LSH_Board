@@ -39,25 +39,14 @@ public class PostWordRepositoryCustomImpl implements PostWordRepositoryCustom {
 //		order by relation_score DESC, c DESC
 //		;
 
-//		System.out.println(select(word.id).from(word).fetch());
-//
-//		List<String> fetch = select(word.id).from(post)
-//			.innerJoin(postWord)
-//			.innerJoin(word)
-//			.where(post.id.ne(findPost.getId())
-////				.and(word.totalCount.lt(select(post.count()).from(post)))
-//			).fetch();
-//
-//		System.out.println(fetch);
-
 		return jpaQueryFactory.select(
-				new QPostDto_ResponseList(post.id, post.title))
+				new QPostDto_ResponseList(post.id, post.title, post.createdAt))
 			.from(postWord)
 			.where(postWord.word.id.in(
 					select(word.id).from(post)
 						.innerJoin(postWord).on(post.id.eq(postWord.post.id))
 						.innerJoin(word).on(postWord.word.id.eq(word.id))
-						.where(post.id.ne(findPost.getId())
+						.where(post.id.eq(findPost.getId())
 							.and(word.totalCount.lt(select(post.count()).from(post)
 								)
 							)

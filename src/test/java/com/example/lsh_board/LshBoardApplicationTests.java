@@ -1,9 +1,7 @@
 package com.example.lsh_board;
 
 import com.example.lsh_board.domain.posts.dto.PostDto.Request;
-import com.example.lsh_board.domain.posts.dto.PostDto.ResponseList;
 import com.example.lsh_board.domain.posts.service.PostService;
-import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,15 +74,12 @@ class LshBoardApplicationTests {
 		//when
 		//then
 
-
-
-
 	}
 
 	@DisplayName("02_00. ")
 	@Test
-	public void test_02_00(){
-	    //given
+	public void test_02_00() {
+		//given
 
 //		List<ResponseList> list = postService.getList();
 //
@@ -92,9 +87,8 @@ class LshBoardApplicationTests {
 //			System.out.println(r);
 //		}
 
-
 		System.out.println(postService.getPost(1L));
-	    //when
-	    //then
+		//when
+		//then
 	}
 }

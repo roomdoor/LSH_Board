@@ -1,8 +1,7 @@
 package com.example.lsh_board.util;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,8 +17,8 @@ class KomoranUtilsTest {
 
 	@DisplayName("01_00. ")
 	@Test
-	public void test_01_00(){
-	    //given
+	public void test_01_00() {
+		//given
 		String s = "오늘은 아침에 아침밥을 먹었다 어제는 아침에 아침밥을 못 먹었다";
 
 		Map<String, Integer> words = komoranUtils.getWord(s);
@@ -29,7 +28,7 @@ class KomoranUtilsTest {
 			System.out.println(words.get(x));
 		}
 
-	    //then
+		//then
 		assertEquals(words.get("오늘"), 1);
 		assertEquals(words.get("어제"), 1);
 		assertEquals(words.get("아침"), 2);

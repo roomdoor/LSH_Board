@@ -1,6 +1,7 @@
 package com.example.lsh_board.domain.posts.controller;
 
-import com.example.lsh_board.domain.posts.dto.PostDto;
+import static com.example.lsh_board.domain.posts.dto.PostDto.Request;
+
 import com.example.lsh_board.domain.posts.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class PostController {
 	private final PostService postService;
 
 	@PostMapping("/post")
-	public ResponseEntity<?> createPost(@RequestBody PostDto.Request request) {
+	public ResponseEntity<?> createPost(@RequestBody Request request) {
 		return ResponseEntity.ok(postService.create(request));
 	}
 
@@ -31,5 +32,10 @@ public class PostController {
 		return ResponseEntity.ok(postService.getPost(postId));
 	}
 
+
+	@GetMapping("/test")
+	public ResponseEntity<?> test(@RequestParam String s) {
+		return ResponseEntity.ok(s);
+	}
 
 }
