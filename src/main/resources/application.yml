@@ -14,3 +14,10 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+
+springdoc:
+  swagger-ui:
+    path: /api-doc.html
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  model-and-view-allowed: true
