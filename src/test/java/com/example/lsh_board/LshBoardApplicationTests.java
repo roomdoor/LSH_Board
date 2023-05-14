@@ -69,7 +69,7 @@ class LshBoardApplicationTests {
 
 		postService.create(Request.builder()
 			.title("10")
-			.text("")
+			.text("a")
 			.build());
 		//when
 		//then

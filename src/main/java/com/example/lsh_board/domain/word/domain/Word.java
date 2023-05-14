@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.ToString.Exclude;
 
 @Getter
 @Setter
@@ -30,6 +31,7 @@ public class Word {
 	private Long totalCount;
 
 	@OneToMany(mappedBy = "word", fetch = FetchType.LAZY)
+	@Exclude
 	private List<PostWord> postWords;
 
 }
