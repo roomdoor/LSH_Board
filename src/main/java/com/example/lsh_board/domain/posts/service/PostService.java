@@ -10,6 +10,8 @@ import com.example.lsh_board.domain.posts.dto.PostDto.ResponseList;
 import com.example.lsh_board.domain.posts.repository.PostRepository;
 import com.example.lsh_board.domain.word.domain.Word;
 import com.example.lsh_board.domain.word.service.WordService;
+import com.example.lsh_board.exception.LSH_BoardException;
+import com.example.lsh_board.exception.type.ErrorCode;
 import com.example.lsh_board.util.KomoranUtils;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class PostService {
 
 	private final PostRepository postRepository;
@@ -30,30 +32,39 @@ public class PostService {
 
 	private final KomoranUtils komoranUtils;
 
+	@Transactional
 	public Response create(Request request) {
+		if (request.getText().isEmpty() || request.getTitle().isEmpty()) {
+			throw new LSH_BoardException(ErrorCode.EMPTY);
+		}
 
 		Post post = postRepository.save(request.toEntity());
 
-		// 1. 총 단어 갯수 파악 -> komoran 으로 단어 추출, 갯수 파악
+		// 1. 게시글 내의 단어 추출, count -> komoran 으로 단어 추출, 갯수 파악
 		Map<String, Integer> wordMap = komoranUtils.getWord(post.getText());
 
-		// 2. 중복 단어 제거 and word 저장 and totalCount++(전체 게시글에서 몇개의 게시글에서 단어가 사용되는지 표시하는 지표);
+		// 2. Word 저장 and totalCount++(전체 게시글에서 몇개의 게시글에서 사용 되는 단어인지 표시하는 지표)
 		List<Word> words = wordService.create(wordMap);
 
-		// 3. postWord 저장
+		// 3. PostWord 저장 (Post와 Word ManyToMany 관계에 중간역할) postWord에 해당 게시글에서 사용된 단어 갯수 저장
 		List<PostWord> postWords = postWordService.create(wordMap, words, post);
+
+		// 4. 리턴값 변환
 		Response response = post.toDto();
+		// 4-1. 연관게시글 검색 and 반환값에 저장
 		response.setRelationPosts(postWordService.getRelationPost(post));
 
 		return response;
 	}
+
 
 	public List<ResponseList> getList() {
 		return Post.toDto(postRepository.findAll());
 	}
 
 	public Response getPost(Long postId) {
-		Post post = postRepository.findById(postId).orElseThrow(null);
+		Post post = postRepository.findById(postId)
+			.orElseThrow(() -> new LSH_BoardException(ErrorCode.NOT_FOUND_POST));
 		Response response = post.toDto();
 		response.setRelationPosts(postWordService.getRelationPost(post));
 
